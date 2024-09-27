@@ -36,7 +36,7 @@ class KickbaseHandler:
             if league.name == self.league_to_use_name:
                 self.league_to_use = league
                 
-    def print_basic_player_info(self, player):
+    def print_player_info(self, player, choice: str = "basic"):
         player_info = {
             "First Name": player.first_name,
             "Last Name": player.last_name,
@@ -49,27 +49,31 @@ class KickbaseHandler:
             "Profile Path": player.profile_path,
             "Profile Big Path": player.profile_big_path,
         }
-        print(player_info, "\n\n")
+        if choice == "basic":
+            print(player_info, "\n\n")
+        elif choice == "market":
+            # add sth to it
+            print(player_info, "\n\n")
         
     def load_top_25_players(self):
         top_25_players = self.kickbase.top_25_players()
         for player in top_25_players:
-            self.print_basic_player_info(player)
+            self.print_player_info(player)
     
     def load_players_on_market(self):
         market = self.kickbase.market(self.league_to_use)
         for player in market.players:
-            self.print_basic_player_info(player)
+            self.print_player_info(player)
     
     def load_players_from_team(self, team_id: str = '3'):
         team_players = self.kickbase.team_players(team_id)
         for player in team_players:
-            self.print_basic_player_info(player)
+            self.print_player_info(player)
     
     def load_own_lineup(self):
         lineup_players = self.kickbase.line_up(self.league_to_use)
         for player in lineup_players:
-            self.print_basic_player_info(player)
+            self.print_player_info(player)
             
 
 if __name__ == "__main__":
