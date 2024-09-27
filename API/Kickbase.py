@@ -84,7 +84,6 @@ class KickbaseHandler:
             }
             player_data.append(player_info)
         player_df = pd.DataFrame(player_data)
-        
         return player_df
         
     def load_top_25_players(self):
@@ -114,5 +113,7 @@ class KickbaseHandler:
 
 if __name__ == "__main__":
     players = KickbaseHandler().load_top_25_players()
-    player_df = KickbaseHandler().transform_to_player_df(players)
-    print(player_df)
+    top_25_player_df = KickbaseHandler().transform_to_player_df(players)
+    
+    players = KickbaseHandler().load_players_on_market()
+    market_player_df = KickbaseHandler().transform_to_player_df(players)
