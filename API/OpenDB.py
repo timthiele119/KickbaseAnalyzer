@@ -37,13 +37,13 @@ class OpenDBHandler:
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
     
-    @exception_handler
     def get_matches_by_team(
         self,
         teamFilterstring: str,
         weekCountPast: int = 5,
-        weekCountFuture: int = 5
-    ):
+        weekCountFuture: int = 5,
+    ):        
+        print(f"weekCountPast: {weekCountPast}", f"weekCountFuture: {weekCountFuture}")
         url = self.base_url + f"/getmatchesbyteam/{teamFilterstring}/{weekCountPast}/{weekCountFuture}"
         response = requests.get(url)
         
@@ -65,34 +65,27 @@ class OpenDBHandler:
                 if match_info["matchIsFinished"]:
                     for result in match["matchResults"]:
                         if result["resultName"] == "Endergebnis":
-                            match_info["home_team_goals"] = result['pointsTeam1']
-                            match_info["away_team_goals"] = result['pointsTeam2']
-                            
                             if teamFilterstring == match_info["home_team"]:
-                                match_info["requested_team_goals"] = match_info["home_team_goals"]
+                                match_info["requested_team_goals"] = result['pointsTeam1']
+                                match_info["opponent_team_goals"] = result['pointsTeam2']
                             else:
-                                match_info["requested_team_goals"] = match_info["away_team_goals"]
+                                match_info["requested_team_goals"] = result['pointsTeam2']
+                                match_info["opponent_team_goals"] = result['pointsTeam1']
                             
-                            goal_diff = match_info["home_team_goals"] - match_info["away_team_goals"]
+                            goal_diff = match_info["requested_team_goals"] - match_info["opponent_team_goals"]
                             if goal_diff > 0:
-                                match_info["home_team_points"] = 3
-                                match_info["away_team_points"] = 0
+                                match_info["requested_team_points"] = 3
+                                match_info["opponent_team_points"] = 0
                             elif goal_diff == 0:
-                                match_info["home_team_points"] = match_info["away_team_points"] = 1
+                                match_info["requested_team_points"] = match_info["opponent_team_points"] = 1
                             else:
-                                match_info["home_team_points"] = 0
-                                match_info["away_team_points"] = 3
-                                
-                            if teamFilterstring == match_info["home_team"]:
-                                match_info["requested_team_points"] = match_info["home_team_points"]
-                                match_info["opponent_team_points"] = match_info["away_team_points"]
-                            else:
-                                match_info["requested_team_points"] = match_info["away_team_points"]
-                                match_info["opponent_team_points"] = match_info["home_team_points"]
+                                match_info["requested_team_points"] = 0
+                                match_info["opponent_team_points"] = 3
                             
                 matches.append(match_info)
             
             match_df = pd.DataFrame(matches).drop_duplicates()
+            print(match_df)
             return match_df
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
@@ -132,37 +125,82 @@ class OpenDBHandler:
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
 
-    @exception_handler
-    def get_measure_coeff(self, table_df, match_df, requested_team, opponent_team):
-        table_position = table_df[table_df["teamName"] == requested_team]["position"].values[0]
-        if not opponent_team:
-            point_history = match_df["requested_team_points"].fillna(value=0).sum()
-        else:
-            point_history = match_df["opponent_team_points"].fillna(value=0).sum()
-        table_coeff = (18 - table_position) / (18 - 1)
-        point_coeff = (point_history - 0)/(15 - 0)
-        club_measure = 0.5 * table_coeff +  0.5 * point_coeff
-        return table_coeff, point_coeff, club_measure
     
-    @exception_handler
-    def enrich_match_df_by_measures(self, table_df, match_df):
-        requested_team = match_df["requested_team"].unique().tolist()[0]
-        table_coeff, point_coeff, club_measure = OpenDBHandler().get_measure_coeff(
-            table_df, match_df, requested_team, opponent_team=False
-        )
-        match_df.loc[match_df["requested_team"] == requested_team, "req_table_coeff"] = table_coeff
-        match_df.loc[match_df["requested_team"] == requested_team, "req_point_coeff"] = point_coeff
-        match_df.loc[match_df["requested_team"] == requested_team, "req_club_measure"] = club_measure
-        print(match_df)
-        
-        for opp_requested_team in match_df["opponent_team"].unique().tolist():
-            table_coeff, point_coeff, club_measure = OpenDBHandler().get_measure_coeff(
-                table_df, match_df, opp_requested_team, opponent_team=True
+    def get_measure_coeff(self, table_df, match_df, requested_team, matchday_to_compute_for: int):
+        table_position = table_df[table_df["teamName"] == requested_team]["position"].values[0]
+        point_history = match_df["requested_team_points"].fillna(value=0).sum()
+        table_coeff = (18 - table_position) / (18 - 1)
+        point_coeff = (point_history - 0)/(matchday_to_compute_for * 3 - 0)
+        print(f"Team: {requested_team} - table_coeff: {table_coeff} - point_coeff: {point_coeff}")
+        return table_coeff, point_coeff
+    
+    
+    def enrich_match_df_by_measures(self, table_df, match_df, current_matchday):
+        """
+        Auslagern:
+        Dynamische Berechnung der Form des Gegners zu dem jeweiligen Spieltag des Aufeinandertreffens.
+        """        
+        for idx in match_df.index:
+            
+            comp_matchday = idx + 1
+            requested_team = match_df.loc[idx, "requested_team"]
+            opp_requested_team = match_df.loc[idx, "opponent_team"]
+            
+            # get req_match_df
+            req_match_df = OpenDBHandler().get_matches_by_team(
+                teamFilterstring=requested_team, 
+                weekCountPast=current_matchday,
+                weekCountFuture=0
             )
-            match_df.loc[match_df["opponent_team"] == opp_requested_team, "opp_table_coeff"] = table_coeff
+            print(f"idx-1: {idx-1}")
+            req_match_df = req_match_df.loc[:idx-1]
+            print(req_match_df)
+            
+            # get req_team metrics
+            if comp_matchday == 1:
+                # when no previous matches, set to balance
+                print("No previous matches available!")
+                table_coeff = 0.5
+                point_coeff = 0.5
+            else:
+                table_coeff, point_coeff = OpenDBHandler().get_measure_coeff(
+                    table_df, req_match_df, requested_team, comp_matchday - 1
+                )
+            match_df.loc[match_df["requested_team"] == requested_team, "req_table_coeff"] = table_coeff
+            match_df.loc[match_df["requested_team"] == requested_team, "req_point_coeff"] = point_coeff
+            col_list = [
+                "requested_team", "opponent_team", "requested_team_points", "opponent_team_points",
+                "req_table_coeff", "req_point_coeff"
+            ]
+            print(match_df.loc[:, col_list])
+            
+            # get opp_match_df
+            opp_match_df = OpenDBHandler().get_matches_by_team(
+                teamFilterstring=opp_requested_team, 
+                weekCountPast=current_matchday,
+                weekCountFuture=0
+            )
+            print(f"idx-1: {idx-1}")
+            opp_match_df = opp_match_df.loc[:idx-1]
+            print(opp_match_df)
+            
+            # get opp_team metrics
+            if comp_matchday == 1:
+                # when no previous matches, set to balance
+                print("No previous matches available!")
+                table_coeff = 0.5
+                point_coeff = 0.5
+            else:
+                table_coeff, point_coeff = OpenDBHandler().get_measure_coeff(
+                    table_df, opp_match_df, opp_requested_team, comp_matchday - 1
+                ) 
+            match_df.loc[match_df["opponent_team"] == opp_requested_team, "static_opp_table_coeff"] = table_coeff
             match_df.loc[match_df["opponent_team"] == opp_requested_team, "opp_point_coeff"] = point_coeff
-            match_df.loc[match_df["opponent_team"] == opp_requested_team, "opp_club_measure"] = club_measure
-            print(match_df) 
+            col_list = [
+                "requested_team", "opponent_team", "requested_team_points", "opponent_team_points",
+                "req_table_coeff", "req_point_coeff", "static_opp_table_coeff", "opp_point_coeff"
+            ]
+            print(match_df.loc[:, col_list])
         
         return match_df
 
@@ -172,4 +210,5 @@ if __name__ == "__main__":
     requested_team="FC Bayern München"
     table_df = OpenDBHandler().get_bl_league_table()
     match_df = OpenDBHandler().get_matches_by_team(teamFilterstring=requested_team)
-    enriched_match_df = OpenDBHandler().enrich_match_df_by_measures(table_df, match_df)
+    enriched_match_df = OpenDBHandler().enrich_match_df_by_measures(table_df, match_df, current_matchday=5)
+    print(enriched_match_df)
