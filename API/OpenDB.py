@@ -34,7 +34,6 @@ class OpenDBHandler:
                     "location": location_city,
                     "time": match_time
                 }
-                print(match_info)
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
     
@@ -128,22 +127,19 @@ class OpenDBHandler:
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
 
-    def get_measure(self, requested_team, table_df, match_df):
+    def get_measure_coeff(self, requested_team, table_df, match_df):
         table_position = table_df[table_df["teamName"] == requested_team]["position"].values[0]
         point_history = match_df["requested_team_points"].fillna(value=0).sum()
         # goal_diff_history = match_df["requested_team_goals"].fillna(value=0).sum()
         table_coeff = (18 - table_position) / (18 - 1)
         point_coeff = (point_history - 0)/(15 - 0)
         club_measure = 0.5 * table_coeff +  0.5 * point_coeff
-        print(f"Team: {requested_team}")
-        print(f"Table Position: {table_position}")
-        print(f"Point History: {point_history}")
-        print(f"table_coeff: {table_coeff}, point_coeff: {point_coeff}")
-        print(f"Club Measure: {club_measure}")
-        return club_measure
-        
+        return table_coeff, point_coeff, club_measure
+
+
 if __name__ == "__main__":
     requested_team="FC Bayern München"
     table_df = OpenDBHandler().get_bl_league_table()
     match_df = OpenDBHandler().get_matches_by_team(teamFilterstring=requested_team)
-    OpenDBHandler().get_measure(requested_team, table_df, match_df)
+    table_coeff, point_coeff, club_measure = OpenDBHandler().get_measure_coeff(requested_team, table_df, match_df)
+    print(table_coeff, point_coeff, club_measure)

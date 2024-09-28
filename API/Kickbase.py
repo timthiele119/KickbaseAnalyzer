@@ -46,12 +46,13 @@ class KickbaseHandler:
     def load_team_name_mapping_json(self):
         with open('teamIDtoNameMapping.json', 'r') as json_file:
             self.team_id_to_name_mapping = json.load(json_file)
-                
-    def print_player_info(self, player, choice: str = "basic"):
-        player_info = {
+            
+    def set_player_info(self, player):
+        return {
             "First Name": player.first_name,
             "Last Name": player.last_name,
             "Team ID": player.team_id,
+            "Team Name": self.team_id_to_name_mapping[player.team_id],
             "Position": player.position,
             "Total Points": player.totalPoints,
             "Average Points": player.average_points,
@@ -60,30 +61,20 @@ class KickbaseHandler:
             "Profile Path": player.profile_path,
             "Profile Big Path": player.profile_big_path,
         }
+                
+    def print_player_info(self, player, choice: str = "basic"):
         if choice == "basic":
-            print(player_info, "\n\n")
+            print(self.set_player_info(player), "\n\n")
         elif choice == "market":
             # add sth to it
-            print(player_info, "\n\n")
+            print(self.set_player_info(player), "\n\n")
             
     def transform_to_player_df(self, players):
         player_data = []
         for player in players:
-            player_info = {
-                "First Name": player.first_name,
-                "Last Name": player.last_name,
-                "Team ID": player.team_id,
-                "Team Name": self.team_id_to_name_mapping[player.team_id],
-                "Position": player.position,
-                "Total Points": player.totalPoints,
-                "Average Points": player.average_points,
-                "Market Value": player.market_value,
-                "Market Value Trend": player.market_value_trend,
-                "Profile Path": player.profile_path,
-                "Profile Big Path": player.profile_big_path,
-            }
-            player_data.append(player_info)
+            player_data.append(self.set_player_info(player))
         player_df = pd.DataFrame(player_data)
+        print(player_df)
         return player_df
         
     def load_top_25_players(self):
