@@ -58,6 +58,7 @@ class OpenDBHandler:
                 match_info["requested_team"] = teamFilterstring
                 match_info["home_team"] = match['team1']['teamName'] if match.get('team1') else 'Unknown Team 1'
                 match_info["away_team"] = match['team2']['teamName'] if match.get('team2') else 'Unknown Team 2'
+                match_info["opponent_team"] = match_info["home_team"] if teamFilterstring == match_info["away_team"] else match_info["away_team"]
                 match_info["datetime"] = match['matchDateTime'] if 'matchDateTime' in match else 'Unknown Time'
                 match_info["matchIsFinished"] = match["matchIsFinished"]
                 
@@ -84,8 +85,10 @@ class OpenDBHandler:
                                 
                             if teamFilterstring == match_info["home_team"]:
                                 match_info["requested_team_points"] = match_info["home_team_points"]
+                                match_info["opponent_team_points"] = match_info["away_team_points"]
                             else:
                                 match_info["requested_team_points"] = match_info["away_team_points"]
+                                match_info["opponent_team_points"] = match_info["home_team_points"]
                             
                 matches.append(match_info)
             
@@ -130,21 +133,43 @@ class OpenDBHandler:
             print(f"Failed to fetch data. Status code: {response.status_code}")
 
     @exception_handler
-    def get_measure_coeff(self, requested_team, table_df, match_df):
+    def get_measure_coeff(self, table_df, match_df, requested_team, opponent_team):
         table_position = table_df[table_df["teamName"] == requested_team]["position"].values[0]
-        point_history = match_df["requested_team_points"].fillna(value=0).sum()
-        # goal_diff_history = match_df["requested_team_goals"].fillna(value=0).sum()
+        if not opponent_team:
+            point_history = match_df["requested_team_points"].fillna(value=0).sum()
+        else:
+            point_history = match_df["opponent_team_points"].fillna(value=0).sum()
         table_coeff = (18 - table_position) / (18 - 1)
         point_coeff = (point_history - 0)/(15 - 0)
         club_measure = 0.5 * table_coeff +  0.5 * point_coeff
         return table_coeff, point_coeff, club_measure
+    
+    @exception_handler
+    def enrich_match_df_by_measures(self, table_df, match_df):
+        requested_team = match_df["requested_team"].unique().tolist()[0]
+        table_coeff, point_coeff, club_measure = OpenDBHandler().get_measure_coeff(
+            table_df, match_df, requested_team, opponent_team=False
+        )
+        match_df.loc[match_df["requested_team"] == requested_team, "req_table_coeff"] = table_coeff
+        match_df.loc[match_df["requested_team"] == requested_team, "req_point_coeff"] = point_coeff
+        match_df.loc[match_df["requested_team"] == requested_team, "req_club_measure"] = club_measure
+        print(match_df)
+        
+        for opp_requested_team in match_df["opponent_team"].unique().tolist():
+            table_coeff, point_coeff, club_measure = OpenDBHandler().get_measure_coeff(
+                table_df, match_df, opp_requested_team, opponent_team=True
+            )
+            match_df.loc[match_df["opponent_team"] == opp_requested_team, "opp_table_coeff"] = table_coeff
+            match_df.loc[match_df["opponent_team"] == opp_requested_team, "opp_point_coeff"] = point_coeff
+            match_df.loc[match_df["opponent_team"] == opp_requested_team, "opp_club_measure"] = club_measure
+            print(match_df) 
+        
+        return match_df
 
 
 if __name__ == "__main__":
+    # Construct requested team measures
     requested_team="FC Bayern München"
     table_df = OpenDBHandler().get_bl_league_table()
     match_df = OpenDBHandler().get_matches_by_team(teamFilterstring=requested_team)
-    print(table_df)
-    print(match_df)
-    table_coeff, point_coeff, club_measure = OpenDBHandler().get_measure_coeff(requested_team, table_df, match_df)
-    print(table_coeff, point_coeff, club_measure)
+    enriched_match_df = OpenDBHandler().enrich_match_df_by_measures(table_df, match_df)

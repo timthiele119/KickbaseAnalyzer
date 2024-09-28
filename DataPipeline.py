@@ -15,11 +15,11 @@ class DataPipeline:
     def fetch_market_data(self):
         players = KickbaseHandler().load_players_on_market()
         market_player_df = KickbaseHandler().transform_to_player_df(players)
+        
+        # Construct measure from OpenDB data source and join it
         market_player_df["Table Coeff."] = np.nan
         market_player_df["Point Coeff."] = np.nan
         market_player_df["Club Measure"] = np.nan
-        
-        # for each fetched player, fetch team match plan
         for team_name in self.team_id_to_name_mapping.values(): 
             table_df = OpenDBHandler().get_bl_league_table()
             match_df = OpenDBHandler().get_matches_by_team(teamFilterstring=team_name)
