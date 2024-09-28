@@ -166,11 +166,11 @@ class OpenDBHandler:
                 table_coeff, point_coeff = OpenDBHandler().get_measure_coeff(
                     table_df, req_match_df, requested_team, comp_matchday - 1
                 )
-            match_df.loc[match_df["requested_team"] == requested_team, "req_table_coeff"] = table_coeff
+            match_df.loc[match_df["requested_team"] == requested_team, "static_req_table_coeff"] = table_coeff
             match_df.loc[match_df["requested_team"] == requested_team, "req_point_coeff"] = point_coeff
             col_list = [
                 "requested_team", "opponent_team", "requested_team_points", "opponent_team_points",
-                "req_table_coeff", "req_point_coeff"
+                "static_req_table_coeff", "req_point_coeff"
             ]
             print(match_df.loc[:, col_list])
             
@@ -198,7 +198,7 @@ class OpenDBHandler:
             match_df.loc[match_df["opponent_team"] == opp_requested_team, "opp_point_coeff"] = point_coeff
             col_list = [
                 "requested_team", "opponent_team", "requested_team_points", "opponent_team_points",
-                "req_table_coeff", "req_point_coeff", "static_opp_table_coeff", "opp_point_coeff"
+                "static_req_table_coeff", "req_point_coeff", "static_opp_table_coeff", "opp_point_coeff"
             ]
             print(match_df.loc[:, col_list])
         
@@ -206,9 +206,8 @@ class OpenDBHandler:
 
 
 if __name__ == "__main__":
-    # Construct requested team measures
+    # Example usage
     requested_team="FC Bayern München"
     table_df = OpenDBHandler().get_bl_league_table()
     match_df = OpenDBHandler().get_matches_by_team(teamFilterstring=requested_team)
     enriched_match_df = OpenDBHandler().enrich_match_df_by_measures(table_df, match_df, current_matchday=5)
-    print(enriched_match_df)

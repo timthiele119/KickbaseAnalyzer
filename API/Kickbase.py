@@ -105,6 +105,7 @@ class KickbaseHandler:
             
 
 if __name__ == "__main__":
+    # Example usage
     players = KickbaseHandler().load_top_25_players()
     top_25_player_df = KickbaseHandler().transform_to_player_df(players)
     
