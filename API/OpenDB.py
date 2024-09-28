@@ -6,10 +6,6 @@ class OpenDBHandler:
     def __init__(self):
         self.base_url = f"https://api.openligadb.de"
         self.load_team_name_mapping_json()
-    
-    def load_team_name_mapping_json(self):
-        with open('teamIDtoNameMapping.json', 'r') as json_file:
-            self.team_id_to_name_mapping = json.load(json_file)
 
     def get_matchups(
         self, 

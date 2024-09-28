@@ -15,7 +15,10 @@ class DataPipeline:
         print(market_player_df)
         
         # for each fetched player, fetch team match plan
+        for idx in market_player_df.index:
+            
         OpenDBHandler().get_matches_by_team(teamFilterstring="Borussia Dortmund")
+        
         
         # construct measure then to create recommendation
         
