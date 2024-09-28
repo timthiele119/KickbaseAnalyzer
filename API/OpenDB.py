@@ -1,12 +1,16 @@
+import sys, os
 import requests
-import json
 import pandas as pd
+
+wdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(wdir)
+from utils.helper import exception_handler
 
 class OpenDBHandler:
     def __init__(self):
         self.base_url = f"https://api.openligadb.de"
-        self.load_team_name_mapping_json()
 
+    @exception_handler
     def get_matchups(
         self, 
         league_shortcut: str = "bl1", 
@@ -33,6 +37,7 @@ class OpenDBHandler:
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
     
+    @exception_handler
     def get_matches_by_team(
         self,
         teamFilterstring: str,
@@ -89,6 +94,7 @@ class OpenDBHandler:
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
 
+    @exception_handler
     def get_bl_league_table(
         self,
         league_shortcut: str = "bl1",
@@ -123,6 +129,7 @@ class OpenDBHandler:
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
 
+    @exception_handler
     def get_measure_coeff(self, requested_team, table_df, match_df):
         table_position = table_df[table_df["teamName"] == requested_team]["position"].values[0]
         point_history = match_df["requested_team_points"].fillna(value=0).sum()
@@ -137,5 +144,7 @@ if __name__ == "__main__":
     requested_team="FC Bayern München"
     table_df = OpenDBHandler().get_bl_league_table()
     match_df = OpenDBHandler().get_matches_by_team(teamFilterstring=requested_team)
+    print(table_df)
+    print(match_df)
     table_coeff, point_coeff, club_measure = OpenDBHandler().get_measure_coeff(requested_team, table_df, match_df)
     print(table_coeff, point_coeff, club_measure)
