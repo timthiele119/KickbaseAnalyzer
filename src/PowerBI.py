@@ -1,8 +1,12 @@
 import sys, os
 
 gitrepo = '/Users/Tim/Documents/KickbaseAnalyzer/KickbaseAnalyzerPowerBI'
+wdir = os.path.join(gitrepo, 'src')
+
 if gitrepo not in sys.path:
     sys.path.append(gitrepo)
+    sys.path.append(wdir)
+
 os.chdir(gitrepo)
 
 from src.DataPipeline import DataPipeline
