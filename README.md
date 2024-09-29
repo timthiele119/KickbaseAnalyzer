@@ -2,12 +2,11 @@
 
 ## ⚽️ Kickbase
 Kickbase is a football manager app that allows users to create and manage their own football teams based on real-time performance data from actual football matches. 
-The app offers live statistics provided by Opta Sports. Users can buy, sell, and trade players, track live scores, and compete in leagues with friends. 
-<br>Link: https://www.kickbase.com/de.
+The app offers live statistics provided by Opta Sports. Users can buy, sell, and trade players, track live scores, and compete in leagues with friends. Link: https://www.kickbase.com/de.
 
 ## 🎯 Project Overview
 This repository contains code to request data from a personal Kickbase account and to further provide it downstream for data analytics (e.g. using PowerBI), 
-enablung making data-driven and intelligent decisions for the next matchday.
+enabling making data-driven and intelligent decisions for the next matchday.
 It enriches the retrieved information about players with additional information about the league and club of the players fetched from OpenDB; 
 to e.g. support buying and lineup decisions.
 
@@ -17,7 +16,7 @@ to e.g. support buying and lineup decisions.
 - Data can be provided as DataFrames using the Python script "" or as CSV-Files
 
 ## 🌱 Why I Built This
-This project was driven by my interest in data analytics, my engagement to learn more about PowerBI (as i build this project for delivering it to it) 
+This project was driven by my interest in data analytics, my engagement to learn more about PowerBI (as i build this project for delivering the data to it) 
 and my recent decision to start playing Kickbase in the Bundesliga 2024/2025 Season.
 
 ## 🛠️ Technologies Used
