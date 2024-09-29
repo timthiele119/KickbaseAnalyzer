@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import json
 import pandas as pd
 
-base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 kickbase_api_path = os.path.join(base_dir, 'kickbase-api-python')
 sys.path.append(kickbase_api_path)
 
@@ -11,7 +11,7 @@ wdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(wdir)
 
 from kickbase_api.kickbase import Kickbase
-from utils.helper import exception_handler
+from utils.helper import exception_handler, load_team_name_mapping_py
 
 
 class KickbaseHandler:
@@ -24,7 +24,7 @@ class KickbaseHandler:
         
         self.login()
         self.get_league()
-        self.load_team_name_mapping_json()
+        self.team_id_to_name_mapping = load_team_name_mapping_py()
     
     @exception_handler
     def login(self):
@@ -39,12 +39,6 @@ class KickbaseHandler:
             if league.name == self.league_to_use_name:
                 self.league_to_use = league
         print(f"League selected: {self.league_to_use_name}\n")
-    
-    @exception_handler
-    def load_team_name_mapping_json(self):
-        with open('teamIDtoNameMapping.json', 'r') as json_file:
-            self.team_id_to_name_mapping = json.load(json_file)
-        print("Team name mapping loaded successfully.\n")
     
     def set_player_info(self, player):
         return {

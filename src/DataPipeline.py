@@ -2,9 +2,9 @@ import os, sys
 from dotenv import load_dotenv
 import numpy as np
 import pandas as pd
-from src.API.Kickbase import KickbaseHandler
-from src.API.OpenDB import OpenDBHandler
-from utils.helper import load_team_name_mapping_json, exception_handler
+from API.Kickbase import KickbaseHandler
+from API.OpenDB import OpenDBHandler
+from utils.helper import exception_handler
 
 load_dotenv()
 CURRENT_MATCHDAY = int(os.getenv("CURRENT_MATCHDAY"))
@@ -12,7 +12,7 @@ CURRENT_MATCHDAY = int(os.getenv("CURRENT_MATCHDAY"))
 class DataPipeline:
     
     def __init__(self):
-        self.team_id_to_name_mapping = load_team_name_mapping_json()
+        pass
     
     @exception_handler
     def fetch_market_data(self, save_csv=False):
