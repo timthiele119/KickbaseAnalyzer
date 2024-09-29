@@ -20,3 +20,8 @@ def load_team_name_mapping_json():
     with open('teamIDtoNameMapping.json', 'r') as json_file:
         team_id_to_name_mapping = json.load(json_file)
     return team_id_to_name_mapping
+
+
+def load_team_name_mapping_py():
+    import teamIDtoNameMapping.map_
+    return map_

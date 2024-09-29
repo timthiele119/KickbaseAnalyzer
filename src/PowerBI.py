@@ -1,10 +1,11 @@
-import sys
+import sys, os
 
-gitrepo = '/c/Users/Tim/Documents/KickbaseAnalyzer/KickbaseAnalyzerPowerBI'
+gitrepo = '/Users/Tim/Documents/KickbaseAnalyzer/KickbaseAnalyzerPowerBI'
 if gitrepo not in sys.path:
     sys.path.append(gitrepo)
+os.chdir(gitrepo)
 
-from DataPipeline import DataPipeline
+from src.DataPipeline import DataPipeline
 
 pipe = DataPipeline()
 

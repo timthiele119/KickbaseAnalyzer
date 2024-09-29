@@ -1,0 +1,20 @@
+map_ = {
+    "2": "FC Bayern München",
+    "3": "Borussia Dortmund",
+    "4": "Eintracht Frankfurt",
+    "5": "SC Freiburg",
+    "7": "Bayer Leverkusen",
+    "9": "VfB Stuttgart",
+    "10": "Werder Bremen",
+    "11": "VfL Wolfsburg",
+    "13": "FC Augsburg",
+    "14": "TSG 1899 Hoffenheim",
+    "15": "Borussia Mönchengladbach",
+    "18": "1. FSV Mainz 05",
+    "24": "VfL Bochum",
+    "39": "FC St. Pauli",
+    "40": "1. FC Union Berlin",
+    "43": "RB Leipzig",
+    "50": "1. FC Heidenheim 1846",
+    "51": "Holstein Kiel"
+}

@@ -2,8 +2,8 @@ import os, sys
 from dotenv import load_dotenv
 import numpy as np
 import pandas as pd
-from API.Kickbase import KickbaseHandler
-from API.OpenDB import OpenDBHandler
+from src.API.Kickbase import KickbaseHandler
+from src.API.OpenDB import OpenDBHandler
 from utils.helper import load_team_name_mapping_json, exception_handler
 
 load_dotenv()
