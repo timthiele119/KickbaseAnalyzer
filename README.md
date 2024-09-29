@@ -43,7 +43,7 @@ and my recent decision to start playing Kickbase in the Bundesliga 2024/2025 Sea
     ```
 4. Run the project for an example demonstration of the datapipeline (saves player dataframe as csv in dir):
     ```
-    python DataPipeline.py
+    python src\DataPipeline.py
     ```
 
 5. For using it as datapipeline in PowerBI, open the file "". Paste the script "" as Python Code in the data load option in PowerBI.
