@@ -1,4 +1,4 @@
-# Hobby Project: Kickbase Analyzer
+# Project: Kickbase Analyzer
 
 ## ⚽️ Kickbase
 Kickbase is a football manager app that allows users to create and manage their own football teams based on real-time performance data from actual football matches. 
