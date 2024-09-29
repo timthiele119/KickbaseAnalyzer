@@ -1,3 +1,5 @@
+# Paste this in PowerBI
+
 import sys, os
 
 gitrepo = '/Users/Tim/Documents/KickbaseAnalyzer/KickbaseAnalyzerPowerBI'
