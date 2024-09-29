@@ -6,8 +6,8 @@ from API.Kickbase import KickbaseHandler
 from API.OpenDB import OpenDBHandler
 from utils.helper import load_team_name_mapping_json, exception_handler
 
-# switch CURRENT_MATCHDAY on friday evenings at 20:30
-CURRENT_MATCHDAY = 5
+load_dotenv()
+CURRENT_MATCHDAY = int(os.getenv("CURRENT_MATCHDAY"))
 
 class DataPipeline:
     
@@ -73,5 +73,4 @@ class DataPipeline:
 
 
 if __name__ == "__main__":
-    market_player_df = DataPipeline().fetch_market_data()
-    top_25_player_df = DataPipeline().fetch_top25_data()
+    top_25_player_df = DataPipeline().fetch_top25_data(save_csv=True)
