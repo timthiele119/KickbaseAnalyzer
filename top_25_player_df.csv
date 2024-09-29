@@ -1,0 +1,26 @@
+,First Name,Last Name,Team ID,Team Name,Position,Total Points,Average Points,Market Value,Market Value Trend,Profile Path,Profile Big Path,static_req_table_coeff,req_point_coeff,static_opp_table_coeff,opp_point_coeff
+0,Harry,Kane,2,FC Bayern München,4,1171,293,59565046.0,1,,https://kickbase.b-cdn.net/pool/playersbig/7226.png,1.0,0.5714285714285714,0.8235294117647058,0.5
+1,Florian,Wirtz,7,Bayer Leverkusen,3,1090,273,53342973.0,1,,https://kickbase.b-cdn.net/pool/playersbig/2795.png,0.8235294117647058,0.2857142857142857,0.0,0.08333333333333333
+2,Granit,Xhaka,7,Bayer Leverkusen,3,905,226,50143881.0,1,https://kickbase.b-cdn.net/pool/players/573.jpg,https://kickbase.b-cdn.net/pool/playersbig/573.png,0.8235294117647058,0.2857142857142857,0.0,0.08333333333333333
+3,Michael,Olise,2,FC Bayern München,3,901,225,39331899.0,1,,https://kickbase.b-cdn.net/pool/playersbig/8329.png,1.0,0.5714285714285714,0.8235294117647058,0.5
+4,Vincenzo,Grifo,5,SC Freiburg,3,861,172,27955110.0,1,https://kickbase.b-cdn.net/pool/players/118.jpg,https://kickbase.b-cdn.net/pool/playersbig/118.png,0.6470588235294118,0.3333333333333333,0.35294117647058826,0.4166666666666667
+5,Alejandro,Grimaldo,7,Bayer Leverkusen,2,850,213,49558774.0,1,,https://kickbase.b-cdn.net/pool/playersbig/6173.png,0.8235294117647058,0.2857142857142857,0.0,0.08333333333333333
+6,Jamal,Musiala,2,FC Bayern München,3,837,209,50254668.0,1,,https://kickbase.b-cdn.net/pool/playersbig/2804.png,1.0,0.5714285714285714,0.8235294117647058,0.5
+7,Péter,Gulácsi,43,RB Leipzig,1,820,164,18323901.0,1,https://kickbase.b-cdn.net/pool/players/1896.jpg,https://kickbase.b-cdn.net/pool/playersbig/1896.png,0.9411764705882353,0.4444444444444444,0.7647058823529411,0.5
+8,Omar,Marmoush,4,Eintracht Frankfurt,4,807,202,27859667.0,1,,https://kickbase.b-cdn.net/pool/playersbig/2792.png,0.7058823529411765,0.42857142857142855,0.0,0.08333333333333333
+9,Xavi,Simons,43,RB Leipzig,3,804,161,40754142.0,1,,https://kickbase.b-cdn.net/pool/playersbig/6672.png,0.9411764705882353,0.4444444444444444,0.7647058823529411,0.5
+10,Serge,Gnabry,2,FC Bayern München,3,767,192,24132773.0,1,https://kickbase.b-cdn.net/pool/players/1961.jpg,https://kickbase.b-cdn.net/pool/playersbig/1961.png,1.0,0.5714285714285714,0.8235294117647058,0.5
+11,Robin,Zentner,18,1. FSV Mainz 05,1,757,151,17782208.0,1,https://kickbase.b-cdn.net/pool/players/1590.jpg,https://kickbase.b-cdn.net/pool/playersbig/1590.png,0.4117647058823529,0.2222222222222222,0.23529411764705882,0.08333333333333333
+12,Joshua,Kimmich,2,FC Bayern München,3,702,176,40218728.0,1,https://kickbase.b-cdn.net/pool/players/1685.jpg,https://kickbase.b-cdn.net/pool/playersbig/1685.png,1.0,0.5714285714285714,0.8235294117647058,0.5
+13,Pascal,Groß,3,Borussia Dortmund,3,679,136,26641938.0,1,https://kickbase.b-cdn.net/pool/players/1473.jpg,https://kickbase.b-cdn.net/pool/playersbig/1473.png,0.8823529411764706,0.47619047619047616,0.058823529411764705,0.08333333333333333
+14,Enzo,Millot,9,VfB Stuttgart,3,677,135,23933333.0,1,,https://kickbase.b-cdn.net/pool/playersbig/3130.png,0.5882352941176471,0.38095238095238093,0.11764705882352941,0.25
+15,Andrej,Kramarić,14,TSG 1899 Hoffenheim,4,667,167,32450501.0,2,https://kickbase.b-cdn.net/pool/players/1815.jpg,https://kickbase.b-cdn.net/pool/playersbig/1815.png,0.11764705882352941,0.14285714285714285,0.35294117647058826,0.4166666666666667
+16,Maximilian,Mittelstädt,9,VfB Stuttgart,2,666,133,24312667.0,1,https://kickbase.b-cdn.net/pool/players/1664.jpg,https://kickbase.b-cdn.net/pool/playersbig/1664.png,0.5882352941176471,0.38095238095238093,0.11764705882352941,0.25
+17,Deniz,Undav,9,VfB Stuttgart,4,653,131,34334648.0,1,,https://kickbase.b-cdn.net/pool/playersbig/7158.png,0.5882352941176471,0.38095238095238093,0.11764705882352941,0.25
+18,Kamil,Grabara,11,VfL Wolfsburg,1,638,128,16281372.0,2,,https://kickbase.b-cdn.net/pool/playersbig/8229.png,0.29411764705882354,0.16666666666666666,0.5882352941176471,0.6666666666666666
+19,Jan,Schöppner,50,1. FC Heidenheim 1846,3,638,128,9922183.0,2,,https://kickbase.b-cdn.net/pool/playersbig/3249.png,0.7647058823529411,0.375,0.4117647058823529,0.3333333333333333
+20,Karim,Adeyemi,3,Borussia Dortmund,4,637,127,19349831.0,1,,https://kickbase.b-cdn.net/pool/playersbig/3482.png,0.8823529411764706,0.47619047619047616,0.058823529411764705,0.08333333333333333
+21,Victor,Boniface,7,Bayer Leverkusen,4,627,157,38388389.0,1,,https://kickbase.b-cdn.net/pool/playersbig/6745.png,0.8235294117647058,0.2857142857142857,0.0,0.08333333333333333
+22,David,Raum,43,RB Leipzig,2,617,123,29163585.0,1,,https://kickbase.b-cdn.net/pool/playersbig/2522.png,0.9411764705882353,0.4444444444444444,0.7647058823529411,0.5
+23,Kevin,Stöger,15,Borussia Mönchengladbach,3,611,122,29738272.0,1,https://kickbase.b-cdn.net/pool/players/619.jpg,https://kickbase.b-cdn.net/pool/playersbig/619.png,0.47058823529411764,0.3333333333333333,0.17647058823529413,0.25
+24,Benjamin,Šeško,43,RB Leipzig,4,596,119,28373323.0,2,,https://kickbase.b-cdn.net/pool/playersbig/6177.png,0.9411764705882353,0.4444444444444444,0.7647058823529411,0.5

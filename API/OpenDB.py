@@ -135,59 +135,38 @@ class OpenDBHandler:
     @exception_handler
     def enrich_match_df_by_measures(self, table_df, match_df, current_matchday):
         """
-        Auslagern:
-        Dynamische Berechnung der Form des Gegners zu dem jeweiligen Spieltag des Aufeinandertreffens.
-        """        
+        Enrich match_df with calculated coefficients for each team's form and table performance.
+        """ 
+        def _calculate_team_coeffs(team, comp_matchday, idx):
+            """
+            Helper function to calculate table and point coefficients for a team.
+            """
+            team_match_df = OpenDBHandler().get_matches_by_team(
+                teamFilterstring=team, 
+                weekCountPast=current_matchday,
+                weekCountFuture=0
+            )
+            team_match_df = team_match_df.loc[:idx-1]
+
+            if comp_matchday == 1:
+                print(f"No previous matches available for {team}, setting coeffs to 0.5.")
+                return 0.5, 0.5
+
+            return OpenDBHandler().get_measure_coeff(table_df, team_match_df, team, comp_matchday - 1)
+
         for idx in match_df.index:
-            
             comp_matchday = idx + 1
             requested_team = match_df.loc[idx, "requested_team"]
-            opp_requested_team = match_df.loc[idx, "opponent_team"]
-            
-            req_match_df = OpenDBHandler().get_matches_by_team(
-                teamFilterstring=requested_team, 
-                weekCountPast=current_matchday,
-                weekCountFuture=0
-            )
-            req_match_df = req_match_df.loc[:idx-1]
-            
-            if comp_matchday == 1:
-                print("No previous matches available, will set point_coeff to 0.5")
-                table_coeff = 0.5
-                point_coeff = 0.5
-            else:
-                table_coeff, point_coeff = OpenDBHandler().get_measure_coeff(
-                    table_df, req_match_df, requested_team, comp_matchday - 1
-                )
-            match_df.loc[match_df["requested_team"] == requested_team, "static_req_table_coeff"] = table_coeff
-            match_df.loc[match_df["requested_team"] == requested_team, "req_point_coeff"] = point_coeff
-            col_list = [
-                "requested_team", "opponent_team", "requested_team_points", "opponent_team_points",
-                "static_req_table_coeff", "req_point_coeff"
-            ]
-            
-            opp_match_df = OpenDBHandler().get_matches_by_team(
-                teamFilterstring=opp_requested_team, 
-                weekCountPast=current_matchday,
-                weekCountFuture=0
-            )
-            opp_match_df = opp_match_df.loc[:idx-1]
-            
-            if comp_matchday == 1:
-                print("No previous matches available, will set point_coeff to 0.5")
-                table_coeff = 0.5
-                point_coeff = 0.5
-            else:
-                table_coeff, point_coeff = OpenDBHandler().get_measure_coeff(
-                    table_df, opp_match_df, opp_requested_team, comp_matchday - 1
-                ) 
-            match_df.loc[match_df["opponent_team"] == opp_requested_team, "static_opp_table_coeff"] = table_coeff
-            match_df.loc[match_df["opponent_team"] == opp_requested_team, "opp_point_coeff"] = point_coeff
-            col_list = [
-                "requested_team", "opponent_team", "requested_team_points", "opponent_team_points",
-                "static_req_table_coeff", "req_point_coeff", "static_opp_table_coeff", "opp_point_coeff"
-            ]
-            
+            opponent_team = match_df.loc[idx, "opponent_team"]
+
+            req_table_coeff, req_point_coeff = _calculate_team_coeffs(requested_team, comp_matchday, idx)
+            match_df.loc[match_df["requested_team"] == requested_team, "static_req_table_coeff"] = req_table_coeff
+            match_df.loc[match_df["requested_team"] == requested_team, "req_point_coeff"] = req_point_coeff
+
+            opp_table_coeff, opp_point_coeff = _calculate_team_coeffs(opponent_team, comp_matchday, idx)
+            match_df.loc[match_df["opponent_team"] == opponent_team, "static_opp_table_coeff"] = opp_table_coeff
+            match_df.loc[match_df["opponent_team"] == opponent_team, "opp_point_coeff"] = opp_point_coeff
+
         return match_df
 
 
@@ -197,3 +176,4 @@ if __name__ == "__main__":
     table_df = OpenDBHandler().get_bl_league_table()
     match_df = OpenDBHandler().get_matches_by_team(teamFilterstring=requested_team)
     enriched_match_df = OpenDBHandler().enrich_match_df_by_measures(table_df, match_df, current_matchday=5)
+    print(enriched_match_df)
