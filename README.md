@@ -9,7 +9,7 @@ This repository contains code to request data from a personal Kickbase account a
 enabling making data-driven and intelligent decisions for the next matchday.
 It enriches the retrieved information about players with additional information about the league and club of the players fetched from OpenDB; 
 to e.g. support buying and lineup decisions.
-Unfortunately, I have no business account of Microsoft, so I cannot share the PowerBI visualizations as webapp online. However, find the attached PowerBI file and the visualizations of the current dashboards as PDF under directory `\PowerBI`.
+Unfortunately, I have no business account of Microsoft, so I cannot share the PowerBI visualizations as webapp online. However, find the attached PowerBI file and the visualizations of the current dashboards as PDF under directory `\PowerBI_Showcase`.
 
 ## ✨ Features
 - Possibility to fetch data about one owns lineup, the market in the league, the top 25 players in the game
@@ -50,8 +50,6 @@ and my recent decision to start playing Kickbase in the Bundesliga 2024/2025 Sea
     ```
     src\PowerBI.py
     ```
-
-5. For using it as datapipeline in PowerBI, open the file "". Paste the script "" as Python Code in the data load option in PowerBI.
 
 ## 👨🏽‍💻 Resources
 - Kickbase Python API:        https://github.com/kevinskyba/kickbase-api-python
